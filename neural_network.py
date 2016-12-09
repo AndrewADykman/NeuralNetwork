@@ -21,8 +21,9 @@ class NeuralNetwork:
     return inputs
 
   def feedBack(self, delta):
+    #may need to change to not affect 0-layer
     for layer in range(self.num_layers-1, -1, -1):
-      delta = self.network[layer].backPropogate(guilt_vector)
+      delta = self.network[layer].backPropogate(delta)
 
   def computerDError(self, expected, returned):
     return (returned - expected)
