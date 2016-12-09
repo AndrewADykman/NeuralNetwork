@@ -3,28 +3,34 @@ from scipy.stats import logistic
 
 class NeuralLayer:
   def __init__(self, num_inputs, num_neurons):
-    self.num_inputs = num_inputs
+    self.num_inputs = num_inputs + 1 #for bias term
     self.num_neurons = num_neurons
     self.potentials = np.zeros([self.num_neurons, 1])
-    #change to have negative values
-    self.weights = np.random.rand(self.num_inputs, self.num_neurons)
-    self.bias = np.random.rand(self.num_neurons, 1)
-    self.Delta = np.zeros_like(self.potentials)
+    self.activations = self.potentials
+    self.weights = (np.random.rand(self.num_neurons, self.num_inputs) -.5)/10
+    self.Delta = np.zeros_like(self.weights)
+    self.last_inputs = None
 
-  def setPotentials(self, input_potentials):
-    self.potentials = np.dot(input_potentials, self.weights) + self.bias
+  def setPotentials(self, input_vec):
+    input_vec = np.append(1, input_vec)
+    self.last_inputs = input_vec
+    self.potentials = np.dot(self.weights, input_vec)
 
-  def getPotentials(self):
-    return logistic(self.potentials)
+  def getActivations(self):
+    self.activations = np.array(logistic.cdf(self.potentials))
+    return self.activations
 
   def backPropogate(self, delta_forward):
     g_prime = self.derivOfLogistic()
-    delta = np.multiply(np.transpose(self.weights)*delta_forward, g_prime)
+    delta = np.multiply(np.dot(self.weights.T, delta_forward), g_prime)
+    # print 'delta:',delta
+    #self.Delta = self.Delta - delta
+    #a = self.weights + self.Delta
     return delta
 
-  def setAsInputLayer(self):
-    self.weights = np.identity(self.num_inputs)
-    self.bias = np.zeros([self.num_neurons, 1])
-
   def derivOfLogistic(self):
-    return self.potentials(np.ones_like(self.potentials) - self.potentials)
+    vs = np.vectorize(dol)
+    return vs(self.last_inputs)
+
+def dol(i):
+  return i*(1-i)
