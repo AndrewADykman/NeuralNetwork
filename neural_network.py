@@ -20,9 +20,9 @@ class NeuralNetwork:
       inputs = self.network[layer].getPotentials()
     return inputs
 
-  def feedBack(self, guilt_vector):
+  def feedBack(self, delta):
     for layer in range(self.num_layers-1, -1, -1):
-      guilt_vector = self.network[layer].backPropogate(guilt_vector)
+      delta = self.network[layer].backPropogate(guilt_vector)
 
-  def computerError(self, expected, returned):
-    return (expected - returned) ** 2
+  def computerDError(self, expected, returned):
+    return (returned - expected)
