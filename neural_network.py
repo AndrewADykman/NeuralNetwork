@@ -46,3 +46,4 @@ if __name__ == '__main__':
   a.network[0].weights = a.network[0].weights + a.network[0].Delta/2.
   y_hat = a.feedForward([1,1])
   # print 'y_hat:',y_hat
+
