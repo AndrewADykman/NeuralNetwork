@@ -11,8 +11,8 @@ def oneHot(labels,maxNum):
 
 def main():
   print "Loading pictures and labels..."
-  (im_train,lab_train) = mnist.load_mnist(dataset="training", digits=np.arange(10), path=".");
-  # (im_test,lab_test) = mnist.load_mnist(dataset="testing", digits=np.arange(10), path=".");
+  # (im_train,lab_train) = mnist.load_mnist(dataset="training", digits=np.arange(10), path=".");
+  (im_train,lab_train) = mnist.load_mnist(dataset="testing", digits=np.arange(10), path=".");
   print "Pictures and labels loaded!\n"
 
   #parameters of inputs/outputs
@@ -27,10 +27,13 @@ def main():
   print "Labels formatted!"
   print "Saving files..."
   
-  np.save('data/train_images.npy', inputs)
+  # np.save('data/train_images.npy', inputs)
+  np.save('data/test_images.npy', inputs)
+
   print "Images saved!\nWorking on labels..."
   
-  np.save('data/train_labels.npy', trainLabels)
+  # np.save('data/train_labels.npy', trainLabels)
+  np.save('data/test_labels.npy', trainLabels)
   print "Labels saved!\nExiting..."
 
 if __name__ == '__main__':
