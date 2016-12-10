@@ -6,6 +6,7 @@ class NeuralNetwork:
     self.num_inputs = num_inputs
     self.num_layers = len(shape)
     self.network = [NeuralLayer(num_inputs, shape[0])]
+
     for layer in range(1, self.num_layers):
       self.network.append(NeuralLayer(shape[layer-1], shape[layer]))
 
@@ -25,25 +26,22 @@ class NeuralNetwork:
 
 if __name__ == '__main__':
   
-  a = NeuralNetwork([2], 2)
+  hiddenLayerDimensions = [2];
+  inputSize = 2;
+
+  TEST_INPUT = [0.9,0.91];
+  TEST_OUTPUT = [.2,.3];
+
+
+  a = NeuralNetwork(hiddenLayerDimensions, inputSize)
   a.network[0].weights = np.array([[.25,.25,-.5],[-.25,-.25,.5]])
-  
-  y_hat = a.feedForward([1,1])
-  #print out
-  delta = a.computeDError(np.array([-1,1]), y_hat)
-  a.feedBack(delta)
-  # print 'weights (pre-BP):',a.network[0].weights
-  # print 'delta:', a.network[0].Delta/2.
-  a.network[0].weights = a.network[0].weights + a.network[0].Delta/2.
-  # print 'weights (post-BP):',a.network[0].weights
+  y_hat = a.feedForward(TEST_INPUT)
+  print 'initial prediction:',y_hat
 
-  y_hat = a.feedForward([1,1])
-  # print 'y_hat:',y_hat
-
-
-  delta = a.computeDError(np.array([-1,1]), y_hat)
-  a.feedBack(delta)
-  a.network[0].weights = a.network[0].weights + a.network[0].Delta/2.
-  y_hat = a.feedForward([1,1])
-  # print 'y_hat:',y_hat
+  # BACKPROP ROUND 1
+  for i in range(1,20):
+    delta = a.computeDError(np.array(TEST_OUTPUT), y_hat)
+    a.feedBack(delta)
+    y_hat = a.feedForward(TEST_INPUT)
+    print 'initial prediction:',y_hat
 
