@@ -5,11 +5,11 @@ class BatchNeuralNetwork:
   def __init__(self, shape, num_inputs,alpha):
     self.num_inputs = num_inputs
     self.num_layers = len(shape)
-    self.network = [NeuralLayer(num_inputs, shape[0])]
+    self.network = [BatchNeuralLayer(num_inputs, shape[0])]
     self.alpha = alpha
 
     for layer in range(1, self.num_layers):
-      self.network.append(NeuralLayer(shape[layer-1], shape[layer]))
+      self.network.append(BatchNeuralLayer(shape[layer-1], shape[layer]))
 
   def feedForward(self, inputs):
     outputs = []

@@ -39,9 +39,11 @@ def main():
 
   #Neural Network Definition
   hiddenLayerDimensions = [ 300, 30, numLabels ]
-  NN = NeuralNetwork(hiddenLayerDimensions, inputSize,alpha)
+  NN = BatchNeuralNetwork(hiddenLayerDimensions, inputSize,alpha)
   correctTest = 0.0
   i_last = 0
+
+  error_over_epochs = np.array([], dtype='float64')
 
   for j in range(0,numEpochs):
     for i in range(0,len(trainLabels),batchSize): 
@@ -75,10 +77,11 @@ def main():
       if (i % 1000 == 0 and i != 0):
         denom = i - i_last
         i_last = i
+        train_accuracy = 100 * (float(correctTest)/float(denom))
         print 'epoch//sample:',j,'//',i
-        print 'Train Accuracy:', int(100 * (float(correctTest)/float(denom)) ),'%'
+        print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0
-
+        error_over_epochs = np.append(error_over_epochs, train_accuracy)
       #   correct = 0;
       #   for idx in range(0,len(testLabels)):
       #     (test_input, test_label) = reshapeInstance(testImages[idx], testLabels[idx], inputSize);
@@ -88,6 +91,8 @@ def main():
       #     correct += float(same);
           
       #   print 'Test Accuracy:', int(100 * (float(correct)/float(idx+1)) ),'%';
+  with open('error_batch.pickle', 'wb') as f:
+    pickle.dump(error_over_epochs, f)
 
 if __name__ == '__main__':
   main()
