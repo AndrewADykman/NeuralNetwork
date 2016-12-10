@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import logistic
+import itertools
 
 class NeuralLayer:
   def __init__(self, num_inputs, num_neurons):
@@ -23,16 +24,20 @@ class NeuralLayer:
     self.activations = np.array(logistic.cdf(self.potentials))
     return self.activations
 
+  def newBatch(self):
+    self.Delta = np.zeros_like(self.weights);
+
   def backPropogate(self, delta_forward,alpha):
     g_prime = self.derivOfLogistic()
+    g_prime = g_prime.flatten();
     delta = np.multiply(np.dot(self.weights.T, delta_forward), g_prime)
     lenLI = len(self.last_inputs);
 
     self.last_inputs = np.asarray(self.last_inputs);
     self.last_inputs.shape = (lenLI,1);
-    self.Delta = (self.last_inputs * delta_forward).T
+    self.Delta = self.Delta + (self.last_inputs * delta_forward).T
     
-    self.weights = self.weights - alpha*self.Delta
+    # self.weights = self.weights - alpha*self.Delta
     
     return delta
 

@@ -54,11 +54,11 @@ def main():
       same = (np.argmax(np.asarray(y_hat)) == np.argmax(np.asarray(train_label)));
       correctTest += float(same);
 
-      if (i%1000 == 0 and i != 0):
+      if (i % 1000 == 0 and i != 0):
         print 'epoch//sample:',j,'//',i
         print 'Train Accuracy:', int(100 * (float(correctTest)/float(1000)) ),'%';
         correctTest = 0;
-        
+
         correct = 0;
         for idx in range(0,len(testLabels)):
           (test_input, test_label) = reshapeInstance(testImages[idx], testLabels[idx], inputSize);
