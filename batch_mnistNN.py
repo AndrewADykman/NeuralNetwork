@@ -22,13 +22,16 @@ def reshapeInstance(t_input, t_label, numElements):
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--error-file', type=str, default='error_batch.pickle')
+  parser.add_argument('--num-epochs', type=int, default=3)
+  parser.add_argument('--alpha', type=float, default=.03)
+  parser.add_argument('--batch-size', type=int, default=2)
   args = parser.parse_args()
   error_file = args.error_file
 
   #config parameters
-  numEpochs = 3
-  alpha = 0.03
-  batchSize = 2
+  numEpochs = args.num_epochs
+  alpha = args.alpha
+  batchSize = args.batch_size
 
   # loading in that good good data
   trainImages = np.load('data/train_images.npy')

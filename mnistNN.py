@@ -21,13 +21,15 @@ def reshapeInstance(t_input, t_label, numElements):
 
 def main():
   parser = argparse.ArgumentParser()
-  parser.add_argument('--error-file', type=str, default='error_online.pickle')
+  parser.add_argument('--error-file', type=str, default = 'error_online.pickle')
+  parser.add_argument('--num-epochs', type=int, default = 3)
+  parser.add_argument('--alpha', type=float, default = .1)
   args = parser.parse_args()
   error_file = args.error_file
 
   #config parameters
-  numEpochs = 2
-  alpha = 0.1
+  numEpochs = args.num_epochs
+  alpha = args.alpha
 
   # loading in that good good data
   trainImages = np.load('data/train_images.npy')
@@ -67,7 +69,7 @@ def main():
         print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0
         error_over_iterations = np.append(error_over_iterations, train_accuracy)
-
+        '''
         correct = 0
         for idx in range(0,len(testLabels)):
           (test_input, test_label) = reshapeInstance(testImages[idx], testLabels[idx], inputSize)
@@ -77,6 +79,7 @@ def main():
           correct += float(same)
           
         print 'Test Accuracy:', int(100 * (float(correct)/float(idx+1)) ),'%'
+        '''
   with open(error_file, 'wb') as f:
     pickle.dump(error_over_iterations, f)
 
