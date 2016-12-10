@@ -15,14 +15,7 @@ class NeuralLayer:
   def setPotentials(self, input_vec):
     input_vec = np.append(1, input_vec)
     self.last_inputs = input_vec
-    
     self.potentials = np.dot(self.weights, input_vec)
-
-    # print 'setting potentials...'
-    # print 'weights:\n',self.weights
-    # print 'input\n',input_vec
-    # print 'potentials\n',self.potentials
-
 
   def getActivations(self):
     self.activations = np.array(logistic.cdf(self.potentials))
@@ -32,7 +25,6 @@ class NeuralLayer:
     g_prime = self.derivOfLogistic()
     delta = np.multiply(np.dot(self.weights.T, delta_forward), g_prime)
     lenLI = len(self.last_inputs);
-
 
     self.last_inputs = np.asarray(self.last_inputs);
     self.last_inputs.shape = (lenLI,1);
