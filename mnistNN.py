@@ -2,6 +2,8 @@ from neural_network import *
 import mnist
 import numpy as np
 import itertools
+import pickle
+import argparse
 
 def reshapeInstance(t_input, t_label, numElements):
 
@@ -18,6 +20,10 @@ def reshapeInstance(t_input, t_label, numElements):
   return (t_input, t_label)
 
 def main():
+  parser = argsparse.ArgumentParser()
+  parser.add_argument('--error-file', type=str, default='error_online.pickle')
+  args = parser.parse_args()
+  error_file = args.error_file
 
   #config parameters
   numEpochs = 2
@@ -41,6 +47,7 @@ def main():
   hiddenLayerDimensions = [ 300, 100, numLabels ]
   NN = NeuralNetwork(hiddenLayerDimensions, inputSize,alpha)
   correctTest = 0.0
+  error_over_iterations = np.array([], dtype='float64')
 
   for j in range(0,numEpochs):
     for i in range(0,len(trainLabels)): 
@@ -55,9 +62,11 @@ def main():
       correctTest += float(same)
 
       if (i % 1000 == 0 and i != 0):
+        train_accuracy = 100 * (float(correctTest)/float(1000))
         print 'epoch//sample:',j,'//',i
-        print 'Train Accuracy:', int(100 * (float(correctTest)/float(1000)) ),'%'
+        print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0
+        error_over_iterations = np.append(error_over_iterations, train_accuracy)
 
         correct = 0
         for idx in range(0,len(testLabels)):
@@ -68,6 +77,8 @@ def main():
           correct += float(same)
           
         print 'Test Accuracy:', int(100 * (float(correct)/float(idx+1)) ),'%'
+  with open(error_file, 'wb') as f:
+    pickle.dump(error_over_iterations, f)
 
 if __name__ == '__main__':
   main()

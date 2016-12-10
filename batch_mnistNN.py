@@ -2,6 +2,8 @@ from batch_neural_network import *
 # import mnist
 import numpy as np
 import itertools
+import pickle
+import argparse
 
 def reshapeInstance(t_input, t_label, numElements):
 
@@ -18,6 +20,11 @@ def reshapeInstance(t_input, t_label, numElements):
   return (t_input, t_label)
 
 def main():
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--error-file', type=str, default='error_batch.pickle')
+  args = parser.parse_args()
+  error_file = args.error_file
+
   #config parameters
   numEpochs = 3
   alpha = 0.03
@@ -41,11 +48,10 @@ def main():
   hiddenLayerDimensions = [ 300, 30, numLabels ]
   NN = BatchNeuralNetwork(hiddenLayerDimensions, inputSize,alpha)
   correctTest = 0.0
-  i_last = 0
-
-  error_over_epochs = np.array([], dtype='float64')
+  error_over_iters = np.array([], dtype='float64')
 
   for j in range(0,numEpochs):
+    i_last = 0
     for i in range(0,len(trainLabels),batchSize): 
 
       upperBound = i+batchSize
@@ -81,7 +87,7 @@ def main():
         print 'epoch//sample:',j,'//',i
         print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0
-        error_over_epochs = np.append(error_over_epochs, train_accuracy)
+        error_over_iters = np.append(error_over_iters, train_accuracy)
       #   correct = 0;
       #   for idx in range(0,len(testLabels)):
       #     (test_input, test_label) = reshapeInstance(testImages[idx], testLabels[idx], inputSize);
@@ -91,9 +97,8 @@ def main():
       #     correct += float(same);
           
       #   print 'Test Accuracy:', int(100 * (float(correct)/float(idx+1)) ),'%';
-  with open('error_batch.pickle', 'wb') as f:
-    pickle.dump(error_over_epochs, f)
+  with open(error_file, 'wb') as f:
+    pickle.dump(error_over_iters, f)
 
 if __name__ == '__main__':
   main()
-
