@@ -20,7 +20,7 @@ def reshapeInstance(t_input, t_label, numElements):
   return (t_input, t_label)
 
 def main():
-  parser = argsparse.ArgumentParser()
+  parser = argparse.ArgumentParser()
   parser.add_argument('--error-file', type=str, default='error_online.pickle')
   args = parser.parse_args()
   error_file = args.error_file
