@@ -1,7 +1,7 @@
 import numpy as np
-from batch_neural_layer import NeuralLayer
+from batch_neural_layer import BatchNeuralLayer
 
-class NeuralNetwork:
+class BatchNeuralNetwork:
   def __init__(self, shape, num_inputs,alpha):
     self.num_inputs = num_inputs
     self.num_layers = len(shape)

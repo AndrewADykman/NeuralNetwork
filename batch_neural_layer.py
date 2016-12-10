@@ -2,16 +2,14 @@ import numpy as np
 from scipy.stats import logistic
 import itertools
 
-class NeuralLayer:
+class BatchNeuralLayer:
   def __init__(self, num_inputs, num_neurons):
-
     self.num_inputs = num_inputs + 1 #for bias term
     self.num_neurons = num_neurons
     self.potentials = np.zeros([self.num_neurons, 1])
     self.activations = self.potentials
     self.weights = (np.random.rand(self.num_neurons, self.num_inputs) -.5)/10
     self.last_inputs = None
-
     self.Delta = np.zeros_like(self.weights)
 
 
