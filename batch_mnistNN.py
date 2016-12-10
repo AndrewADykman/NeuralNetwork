@@ -1,66 +1,65 @@
-from batch_neural_network import *;
-# import mnist;
-import numpy as np;
+from batch_neural_network import *
+# import mnist
+import numpy as np
 import itertools
 
 def reshapeInstance(t_input, t_label, numElements):
 
   #reshape and scale // make it a list
-  t_input = np.reshape(t_input,(numElements,1));
-  t_input = (t_input + 1)/257.;
-  t_input = t_input.tolist();
+  t_input = np.reshape(t_input,(numElements,1))
+  t_input = (t_input + 1)/257.
+  t_input = t_input.tolist()
   t_input = list(itertools.chain.from_iterable(t_input))
 
   #make it a list
-  t_label = t_label.tolist();
+  t_label = t_label.tolist()
   t_label = list(itertools.chain.from_iterable(t_label))
 
-  return (t_input, t_label);
+  return (t_input, t_label)
 
 def main():
-
   #config parameters
-  numEpochs = 3;
-  alpha = 0.03;
-  batchSize = 2;
+  numEpochs = 3
+  alpha = 0.03
+  batchSize = 2
 
   # loading in that good good data
-  trainImages = np.load('data/train_images.npy');
-  trainLabels = np.load('data/train_labels.npy');
+  trainImages = np.load('data/train_images.npy')
+  trainLabels = np.load('data/train_labels.npy')
   
-  testImages = np.load('data/test_images.npy');
-  testLabels = np.load('data/test_labels.npy');
+  testImages = np.load('data/test_images.npy')
+  testLabels = np.load('data/test_labels.npy')
 
-  imSize = np.shape(trainImages[0]);
-  inputSize = imSize[0]*imSize[1];
-  numLabels = len(trainLabels[0]);
+  imSize = np.shape(trainImages[0])
+  inputSize = imSize[0]*imSize[1]
+  numLabels = len(trainLabels[0])
 
   print '# features in:',inputSize
   print '# possibe labels out:',numLabels
 
   #Neural Network Definition
-  hiddenLayerDimensions = [ 300, 30, numLabels ];
+  hiddenLayerDimensions = [ 300, 30, numLabels ]
   NN = NeuralNetwork(hiddenLayerDimensions, inputSize,alpha)
-  correctTest = 0.0;
-  i_last = 0;
+  correctTest = 0.0
+  i_last = 0
 
   for j in range(0,numEpochs):
     for i in range(0,len(trainLabels),batchSize): 
 
-      upperBound = i+batchSize;
+      upperBound = i+batchSize
       if upperBound > len(trainLabels) - 1:
-        upperBound = len(trainLabels) - 1;
+        upperBound = len(trainLabels) - 1
 
-      inputs = trainImages[i:upperBound];
-      labels = trainLabels[i:upperBound];
+      inputs = trainImages[i:upperBound]
+      labels = trainLabels[i:upperBound]
 
-      train_inputs = [];
-      train_labels = [];
-      bsBatchSize = upperBound - i;
+      train_inputs = []
+      train_labels = []
+      bsBatchSize = upperBound - i
       for k in range(0, bsBatchSize):
-        (train_input, train_label) = reshapeInstance(inputs[k], labels[k], inputSize);
-        train_inputs.append(train_input);
-        train_labels.append(train_label);
+        (train_input, train_label) = reshapeInstance(inputs[k], labels[k], inputSize)
+        train_inputs.append(train_input)
+        train_labels.append(train_label)
 
       y_hats = NN.feedForward(train_inputs)
       outputDeltas = NN.computeDError(train_labels, y_hats)
@@ -68,17 +67,17 @@ def main():
 
       # print y_hats
       for a in range(0,len(y_hats)):
-        y_hat = y_hats[a];
-        train_label = train_labels[a];
-        same = (np.argmax(np.asarray(y_hat)) == np.argmax(np.asarray(train_label)));
-        correctTest += float(same);
+        y_hat = y_hats[a]
+        train_label = train_labels[a]
+        same = (np.argmax(np.asarray(y_hat)) == np.argmax(np.asarray(train_label)))
+        correctTest += float(same)
 
       if (i % 1000 == 0 and i != 0):
-        denom = i - i_last;
-        i_last = i;
+        denom = i - i_last
+        i_last = i
         print 'epoch//sample:',j,'//',i
-        print 'Train Accuracy:', int(100 * (float(correctTest)/float(denom)) ),'%';
-        correctTest = 0;
+        print 'Train Accuracy:', int(100 * (float(correctTest)/float(denom)) ),'%'
+        correctTest = 0
 
       #   correct = 0;
       #   for idx in range(0,len(testLabels)):

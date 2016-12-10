@@ -6,20 +6,20 @@ class BatchNeuralNetwork:
     self.num_inputs = num_inputs
     self.num_layers = len(shape)
     self.network = [NeuralLayer(num_inputs, shape[0])]
-    self.alpha = alpha;
+    self.alpha = alpha
 
     for layer in range(1, self.num_layers):
       self.network.append(NeuralLayer(shape[layer-1], shape[layer]))
 
   def feedForward(self, inputs):
-    outputs = [];
+    outputs = []
     for i in range(0,len(inputs)):
-      input_vect = inputs[i];
+      input_vect = inputs[i]
 
       for layer in range(self.num_layers):
         self.network[layer].setPotentials(input_vect)
         input_vect = self.network[layer].getActivations()
-      outputs.append(input_vect);
+      outputs.append(input_vect)
 
     return outputs
 
@@ -28,7 +28,7 @@ class BatchNeuralNetwork:
 
     # print np.shape(deltas)
     for i in range(0,len(deltas)):
-      delta = deltas[i];
+      delta = deltas[i]
 
       for layer in range(self.num_layers-1, -1, -1):
         # if layer == 1:
@@ -36,7 +36,7 @@ class BatchNeuralNetwork:
         #   print self.network[layer].Delta[0][0]
 
         delta = self.network[layer].backPropogate(delta,self.alpha)        
-        delta = delta[1:len(delta)];
+        delta = delta[1:len(delta)]
         
         # if layer == 1:
 
@@ -45,15 +45,15 @@ class BatchNeuralNetwork:
     for layer in range(self.num_layers-1, -1, -1):
       # print 'new batch\n'
 
-      self.network[layer].weights = self.network[layer].weights - self.alpha * self.network[layer].Delta;
-      self.network[layer].newBatch();
+      self.network[layer].weights = self.network[layer].weights - self.alpha * self.network[layer].Delta
+      self.network[layer].newBatch()
 
 
   def computeDError(self, expected, returned):
-    returned = np.asarray(returned);
-    expected = np.asarray(expected);
-    # print 'returned shape:',np.shape(returned);
-    # print 'expected shape:',np.shape(expected);
-    result = (returned - expected);
+    returned = np.asarray(returned)
+    expected = np.asarray(expected)
+    # print 'returned shape:',np.shape(returned)
+    # print 'expected shape:',np.shape(expected)
+    result = (returned - expected)
 
-    return result.tolist();
+    return result.tolist()

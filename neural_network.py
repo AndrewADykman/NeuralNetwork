@@ -6,7 +6,7 @@ class NeuralNetwork:
     self.num_inputs = num_inputs
     self.num_layers = len(shape)
     self.network = [NeuralLayer(num_inputs, shape[0])]
-    self.alpha = alpha;
+    self.alpha = alpha
 
     for layer in range(1, self.num_layers):
       self.network.append(NeuralLayer(shape[layer-1], shape[layer]))
@@ -23,7 +23,7 @@ class NeuralNetwork:
       # print 'delta',layer,':',delta
       
       delta = self.network[layer].backPropogate(delta,self.alpha)
-      delta = delta[1:len(delta)];
+      delta = delta[1:len(delta)]
 
   def computeDError(self, expected, returned):
     return (returned - expected)

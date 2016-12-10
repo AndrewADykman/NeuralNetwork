@@ -26,10 +26,10 @@ class NeuralLayer:
   def backPropogate(self, delta_forward,alpha):
     g_prime = self.derivOfLogistic()
     delta = np.multiply(np.dot(self.weights.T, delta_forward), g_prime)
-    lenLI = len(self.last_inputs);
+    lenLI = len(self.last_inputs)
 
-    self.last_inputs = np.asarray(self.last_inputs);
-    self.last_inputs.shape = (lenLI,1);
+    self.last_inputs = np.asarray(self.last_inputs)
+    self.last_inputs.shape = (lenLI,1)
     self.Delta = (self.last_inputs * delta_forward).T
     
     self.weights = self.weights - alpha*self.Delta
