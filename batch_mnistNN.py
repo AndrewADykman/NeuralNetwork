@@ -24,7 +24,7 @@ def main():
   parser.add_argument('--error-file', type=str, default='error_batch.pickle')
   parser.add_argument('--num-epochs', type=int, default=3)
   parser.add_argument('--alpha', type=float, default=.03)
-  parser.add_argument('--batch-size', type=int, default=2)
+  parser.add_argument('--batch-size', type=int, default=2, help='number of examples per batch, -1 is full batch')
   args = parser.parse_args()
   error_file = args.error_file
 
@@ -52,6 +52,7 @@ def main():
   NN = BatchNeuralNetwork(hiddenLayerDimensions, inputSize,alpha)
   correctTest = 0.0
   error_over_iters = np.array([], dtype='float64')
+  if batchSize == -1: batchSize = len(trainLabels)
 
   for j in range(0,numEpochs):
     i_last = 0
