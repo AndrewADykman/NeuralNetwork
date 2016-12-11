@@ -87,7 +87,7 @@ def main():
       if (i % 1000 == 0 and i != 0):
         denom = i - i_last
         i_last = i
-        train_accuracy = 100 * (float(correctTest)/float(denom))
+        train_accuracy = 100 - (100 * (float(correctTest)/float(denom)))
         #print 'epoch//sample:',j,'//',i
         #print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0

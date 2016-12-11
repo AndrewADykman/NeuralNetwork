@@ -64,7 +64,7 @@ def main():
       correctTest += float(same)
 
       if (i % 1000 == 0 and i != 0):
-        train_accuracy = 100 * (float(correctTest)/float(1000))
+        train_accuracy = 100 - (100 * (float(correctTest)/float(1000)))
         #print 'epoch//sample:',j,'//',i
         #print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0
