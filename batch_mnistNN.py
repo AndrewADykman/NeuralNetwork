@@ -44,8 +44,8 @@ def main():
   inputSize = imSize[0]*imSize[1]
   numLabels = len(trainLabels[0])
 
-  print '# features in:',inputSize
-  print '# possibe labels out:',numLabels
+  #print '# features in:',inputSize
+  #print '# possibe labels out:',numLabels
 
   #Neural Network Definition
   hiddenLayerDimensions = [ 300, 30, numLabels ]
@@ -87,8 +87,8 @@ def main():
         denom = i - i_last
         i_last = i
         train_accuracy = 100 * (float(correctTest)/float(denom))
-        print 'epoch//sample:',j,'//',i
-        print 'Train Accuracy:', int(train_accuracy),'%'
+        #print 'epoch//sample:',j,'//',i
+        #print 'Train Accuracy:', int(train_accuracy),'%'
         correctTest = 0
         error_over_iters = np.append(error_over_iters, train_accuracy)
       #   correct = 0;
