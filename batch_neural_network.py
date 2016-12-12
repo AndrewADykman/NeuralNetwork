@@ -26,24 +26,15 @@ class BatchNeuralNetwork:
   def feedBack(self, deltas):
     #may need to change to not affect 0-layer
 
-    # print np.shape(deltas)
     for i in range(0,len(deltas)):
       delta = deltas[i]
 
       for layer in range(self.num_layers-1, -1, -1):
-        # if layer == 1:
-        #   print i 
-        #   print self.network[layer].Delta[0][0]
 
         delta = self.network[layer].backPropogate(delta,self.alpha)        
         delta = delta[1:len(delta)]
-        
-        # if layer == 1:
-
-        #   print self.network[layer].Delta[0][0]
 
     for layer in range(self.num_layers-1, -1, -1):
-      # print 'new batch\n'
 
       self.network[layer].weights = self.network[layer].weights - self.alpha * self.network[layer].Delta
       self.network[layer].newBatch()
@@ -52,8 +43,6 @@ class BatchNeuralNetwork:
   def computeDError(self, expected, returned):
     returned = np.asarray(returned)
     expected = np.asarray(expected)
-    # print 'returned shape:',np.shape(returned)
-    # print 'expected shape:',np.shape(expected)
     result = (returned - expected)
 
     return result.tolist()
