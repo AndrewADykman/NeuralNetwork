@@ -1,12 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle as cucumber
+import argparse
 
-title = 'ASDFASDFASDF';
-output_filename = 'asdf'
+parser = argparse.ArgumentParser()
+parser.add_argument('--filename', type=str, default = '-1')
+args = parser.parse_args()
+infilename = args.filename
+output_filename  = infilename[:-7] 
 
-training_error_file = 'pickles/train_error_online_NN3.pickle'
-test_error_file = 'pickles/test_error_online_NN3.pickle'
+training_error_file = 'ttpickle/' + infilename
+test_error_file = 'ttpickle/test' + infilename[5:]
+title = 'Test and Train Error On Config '+ infilename[19:-7]
 
 with open(training_error_file,'r') as f:
   train_error = cucumber.load(f);
@@ -35,4 +40,3 @@ plt.ylabel('Error')
 plt.title(title)
 plt.grid(False)
 plt.savefig("outputPlots/" + output_filename)
-plt.show()
