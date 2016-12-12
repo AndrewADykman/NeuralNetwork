@@ -1,7 +1,5 @@
-for D in ./pickles/*.pickle
+for D in ./ttpickle/train*
 do
-    currfile=$(basename $D)
-    pref="./pickle/"
-    echo "$D"
-    python plotData.py $D
+    echo $D
+    python testplot.py --filename $D
 done

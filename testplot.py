@@ -7,10 +7,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--filename', type=str, default = '-1')
 args = parser.parse_args()
 infilename = args.filename
-output_filename  = infilename[:-7] 
+output_filename  = infilename[11:-7] 
 
-training_error_file = 'ttpickle/' + infilename
-test_error_file = 'ttpickle/test' + infilename[5:]
+training_error_file = infilename
+test_error_file = 'ttpickle/test' + infilename[16:]
 title = 'Test and Train Error On Config '+ infilename[19:-7]
 
 with open(training_error_file,'r') as f:
